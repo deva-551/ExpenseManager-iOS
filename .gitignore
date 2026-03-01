@@ -4,6 +4,10 @@ xcuserdata/
 *.xcworkspace/xcuserdata/
 *.xcscmblueprint
 *.xccheckout
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
 
 # Core Data
 *.sqlite
@@ -18,9 +22,6 @@ xcuserdata/
 # Build
 Build/
 DerivedData/
-*.ipa
-*.dSYM.zip
-*.dSYM
 
 # User settings
 UserInterfaceState.xcuserstate
@@ -32,14 +33,21 @@ Packages/
 Package.pins
 Package.resolved
 
-# CocoaPods (if used in future)
+# CocoaPods
 Pods/
 
-# Fastlane (if used in future)
+# Carthage
+Carthage/Build/
+
+# Fastlane
 fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
+
+# Playgrounds
+timeline.xctimeline
+playground.xcworkspace
 
 # Claude Code
 .claude/
