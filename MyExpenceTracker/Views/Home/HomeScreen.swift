@@ -55,7 +55,6 @@ struct HomeScreen: View {
                 expandableFAB
             }
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar(isFABExpanded ? .hidden : .visible, for: .tabBar)
             .animation(.easeInOut(duration: 0.25), value: isFABExpanded)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {

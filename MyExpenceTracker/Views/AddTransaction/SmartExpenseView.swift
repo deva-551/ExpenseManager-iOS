@@ -203,26 +203,49 @@ struct TextToExpenseView: View {
     
     private func addTransactions(_ expenses: [ParsedExpense]) {
         let defaultAccount = accountVM.accounts.first
-        
+        var savedCount = 0
+        var errorMessages: [String] = []
+
         for expense in expenses {
             let type = expense.type.lowercased() == "income" ? "income" : "expense"
             let categories = type == "income" ? categoryVM.incomeCategories : categoryVM.expenseCategories
             let matched = matchCategory(named: expense.categoryName, in: categories)
-            
-            guard let category = matched, let account = defaultAccount else { continue }
-            
-            try? transactionVM.addTransaction(
-                amount: expense.amount,
-                type: type,
-                date: Date(),
-                notes: expense.notes.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : expense.notes,
-                category: category,
-                account: account
-            )
+
+            guard let category = matched else {
+                errorMessages.append("No \(type) category found for '\(expense.categoryName)'")
+                continue
+            }
+
+            guard let account = defaultAccount else {
+                errorMessages.append("No account available. Please create an account first.")
+                break
+            }
+
+            do {
+                try transactionVM.addTransaction(
+                    amount: expense.amount,
+                    type: type,
+                    date: Date(),
+                    notes: expense.notes.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : expense.notes,
+                    category: category,
+                    account: account
+                )
+                savedCount += 1
+            } catch {
+                errorMessages.append("Failed to save: \(error.localizedDescription)")
+            }
         }
-        
-        UINotificationFeedbackGenerator().notificationOccurred(.success)
-        dismiss()
+
+        if savedCount > 0 {
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
+            dismiss()
+        } else {
+            UINotificationFeedbackGenerator().notificationOccurred(.error)
+            let message = errorMessages.isEmpty
+                ? "No transactions could be saved. Please check your categories and accounts."
+                : errorMessages.joined(separator: "\n")
+            withAnimation { state = .error(message) }
+        }
     }
 }
 
@@ -452,26 +475,49 @@ struct ImageToExpenseView: View {
     
     private func addTransactions(_ expenses: [ParsedExpense]) {
         let defaultAccount = accountVM.accounts.first
-        
+        var savedCount = 0
+        var errorMessages: [String] = []
+
         for expense in expenses {
             let type = expense.type.lowercased() == "income" ? "income" : "expense"
             let categories = type == "income" ? categoryVM.incomeCategories : categoryVM.expenseCategories
             let matched = matchCategory(named: expense.categoryName, in: categories)
-            
-            guard let category = matched, let account = defaultAccount else { continue }
-            
-            try? transactionVM.addTransaction(
-                amount: expense.amount,
-                type: type,
-                date: Date(),
-                notes: expense.notes.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : expense.notes,
-                category: category,
-                account: account
-            )
+
+            guard let category = matched else {
+                errorMessages.append("No \(type) category found for '\(expense.categoryName)'")
+                continue
+            }
+
+            guard let account = defaultAccount else {
+                errorMessages.append("No account available. Please create an account first.")
+                break
+            }
+
+            do {
+                try transactionVM.addTransaction(
+                    amount: expense.amount,
+                    type: type,
+                    date: Date(),
+                    notes: expense.notes.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : expense.notes,
+                    category: category,
+                    account: account
+                )
+                savedCount += 1
+            } catch {
+                errorMessages.append("Failed to save: \(error.localizedDescription)")
+            }
         }
-        
-        UINotificationFeedbackGenerator().notificationOccurred(.success)
-        dismiss()
+
+        if savedCount > 0 {
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
+            dismiss()
+        } else {
+            UINotificationFeedbackGenerator().notificationOccurred(.error)
+            let message = errorMessages.isEmpty
+                ? "No transactions could be saved. Please check your categories and accounts."
+                : errorMessages.joined(separator: "\n")
+            withAnimation { state = .error(message) }
+        }
     }
 }
 
