@@ -1,0 +1,45 @@
+# Xcode
+xcuserdata/
+*.xcuserstate
+*.xcworkspace/xcuserdata/
+*.xcscmblueprint
+*.xccheckout
+
+# Core Data
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Build
+Build/
+DerivedData/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# User settings
+UserInterfaceState.xcuserstate
+
+# Swift Package Manager
+.build/
+.swiftpm/
+Packages/
+Package.pins
+Package.resolved
+
+# CocoaPods (if used in future)
+Pods/
+
+# Fastlane (if used in future)
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# Claude Code
+.claude/
